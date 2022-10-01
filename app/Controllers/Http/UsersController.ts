@@ -23,9 +23,11 @@ export default class UsersController {
   public async login({ auth, request, response }: HttpContextContract) {
     const paylaod = await request.validate(LoginUserValidator)
 
-    await auth
-      .attempt(paylaod.email, paylaod.password)
-      .then(() => response.redirect('/'))
-      .catch(() => response)
+    await auth.attempt(paylaod.email, paylaod.password).then(() => response.redirect('/'))
+  }
+
+  public async logout({ auth, response }: HttpContextContract) {
+    await auth.logout()
+    response.redirect('/auth/login')
   }
 }

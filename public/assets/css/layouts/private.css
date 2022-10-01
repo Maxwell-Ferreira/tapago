@@ -1,0 +1,23 @@
+html,
+body {
+  height: 100%;
+  background-color: rgb(13, 7, 19);
+  color: rgb(234, 229, 240);
+}
+
+main {
+  height: 100%;
+  overflow-y: auto;
+
+  display: flex;
+}
+
+#sidebar {
+  height: 100%;
+  width: 280px;
+}
+
+#content {
+  padding: 32px;
+  width: 100%;
+}

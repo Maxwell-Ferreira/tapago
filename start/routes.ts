@@ -9,6 +9,8 @@ Route.group(() => {
 }).prefix('auth/')
 
 Route.group(() => {
+  Route.get('/auth/logout', 'UsersController.logout')
+
   Route.get('/', 'DashboardController.index')
 
   // PEOPLE ROUTES

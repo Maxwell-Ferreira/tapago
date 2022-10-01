@@ -1,7 +1,7 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class DashboardController {
-  public async index() {
-    return 'DASHBOARD!'
+  public async index({ view }: HttpContextContract) {
+    return view.render('pages/private/dashboard/index')
   }
 }

@@ -29,11 +29,10 @@
       <div class="d-grid gap-2">
         <button class="btn button-primary" type="submit">Entrar</button>
         @if(flashMessages.has('auth.error'))
-          <div class="text-danger text-left"> {{ flashMessages.get('errors.password') }} </div>
+          <div class="text-danger text-left"> {{ flashMessages.get('auth.error').split(':')[1] }} </div>
         @end
       </div>
     </form>
     <p>Não possui conta? <a href="/auth/register">Clique aqui</a> para se cadastrar!</p>
   </div>
-  {{ inspect(flashMessages.all()) }}
 @endsection

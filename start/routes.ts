@@ -1,25 +1,22 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer''
-|
-*/
-
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async ({ view }) => {
-  return view.render('welcome')
-})
+// AUTHENTICATION ROUTES
+Route.group(() => {
+  Route.get('register', 'UsersController.registerForm')
+  Route.post('register', 'UsersController.register')
+  Route.get('login', 'UsersController.loginForm')
+  Route.post('login', 'UsersController.login')
+}).prefix('auth/')
+
+Route.group(() => {
+  Route.get('/', 'DashboardController.index')
+
+  // PEOPLE ROUTES
+  Route.resource('people', 'PeopleController')
+
+  // EXPENSES ROUTES
+  Route.get('expenses/fixeds', 'ExpensesController.findAllFixeds')
+  Route.get('expenses/single', 'ExpensesController.findAllSingle')
+  Route.get('expenses/header-info', 'ExpensesController.headerInfo')
+  Route.resource('expenses', 'ExpensesController').except(['index'])
+}).middleware(['auth'])

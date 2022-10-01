@@ -1,0 +1,43 @@
+html,
+body {
+  height: 100%;
+  background-color: rgb(13, 7, 19);
+  color: rgb(234, 229, 240);
+}
+
+main {
+  height: calc(100% - 50px);
+  overflow-y: auto;
+}
+
+footer {
+  height: 50px;
+}
+
+#content {
+  height: 100%;
+}
+
+#form {
+  width: 500px;
+}
+
+.button-primary {
+  background-color: rgb(41, 15, 66);
+  color: inherit!important;
+}
+
+.button-primary:hover {
+  background-color: rgb(31, 11, 49)!important;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+#message {
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  max-width: 300px;
+}

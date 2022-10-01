@@ -1,0 +1,50 @@
+@layout('layouts/public')
+
+@set('title', 'Cadastro')
+
+@section('content')
+  <div id="content" class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="">Ta-Pago</h1>
+    <br /><br />
+    <h2 class="">Cadastro</h2>
+    <br />
+    <form id="form" class="p-4 text-center" method="post">
+      <div class="form-group">
+        <label class="d-block " htmlFor="name">Nome</label>
+        <input type="text" name="name" id="name" placeholder="Insira seu nome completo" class="form-control" value="{{ flashMessages.get('name') || '' }}"/>
+        @if(flashMessages.has('errors.name'))
+          <div class="text-danger text-left"> {{ flashMessages.get('errors.name') }} </div>
+        @end
+      </div>
+      <div class="form-group">
+        <label class="d-block " htmlFor="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="Insira seu email" class="form-control" value="{{ flashMessages.get('email') || '' }}"/>
+        @if(flashMessages.has('errors.email'))
+          <div class="text-danger text-left"> {{ flashMessages.get('errors.email') }} </div>
+        @end
+      </div>
+      <div class="form-group">
+        <label class="d-block " htmlFor="password">Senha</label>
+        <input type="password" name="password" id="password" placeholder="Insira sua senha" class="form-control" />
+        @if(flashMessages.has('errors.password'))
+          <div class="text-danger text-left"> {{ flashMessages.get('errors.password') }} </div>
+        @end
+      </div>
+      <div class="form-group">
+        <label class="d-block " htmlFor="password">Confirmar Senha</label>
+        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirme sua senha" class="form-control" />
+        @if(flashMessages.has('errors.password_confirmation'))
+          <div class="text-danger text-left"> {{ flashMessages.get('errors.password_confirmation') }} </div>
+        @end
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn button-primary" type="submit">Cadastrar</button>
+        @if(flashMessages.has('auth.error'))
+          <div class="text-danger text-left"> {{ flashMessages.get('errors.password') }} </div>
+        @end
+      </div>
+    </form>
+    <p>Já possui conta? <a href="/auth/login">Clique aqui</a> para entrar!</p>
+  </div>
+  {{ inspect(flashMessages.all()) }}
+@endsection

@@ -1,0 +1,76 @@
+@layout('layouts/private')
+@set('title', 'Nova Despesa')
+
+@section('content')
+  <div id="content">
+    <div class="container">
+      <h1>Nova Despesa</h1>
+      <hr>
+
+      @if(flashMessages.has('message'))
+        <div id="message" class="alert alert-dark"> {{ flashMessages.get('message') }} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>
+      @end
+
+      <form method="post" action="/expenses">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="description" class="form-label">Descrição <span class="text-danger">*</span></label>
+              <input type="text" id="description" name="description" class="form-control" value="{{ flashMessages.get('description') || '' }}">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="amount" class="form-label">Valor (em R$) <span class="text-danger">*</span></label>
+              <input type="number" step="0.01" min="0.01" id="amount" name="amount" class="form-control" value="{{ flashMessages.get('amount') || '' }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="type" class="form-label">Tipo <span class="text-danger">*</span></label>
+              <select name="type" id="type" class="form-select">
+                <option value="">Selecione um tipo</option>
+                <option value="FIXED" {{ flashMessages.get('type') === 'FIXED' ? 'selected' : '' }}>Despesa Fixa</option>
+                <option value="SINGLE" {{ flashMessages.get('type') === 'SINGLE' ? 'selected' : '' }}>Despesa avulsa</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="expires_in" class="form-label">Data de expiração</label>
+              <input type="date" id="expires_in" name="expires_in" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" value="1" id="continueRegistring" name="continueRegistring">
+          <label class="form-check-label" for="continueRegistring">
+            Continuar Cadastrando
+          </label>
+        </div>
+
+        <div class="mt-2">
+          <button class="btn btn-success">Cadastrar</button>
+          <a href="/expenses" class="btn btn-secondary">Voltar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const errors = JSON.parse('{{{stringfy(flashMessages.all()?.errors)}}}');
+    if (errors) {
+      Object.entries(errors).forEach(([key, value]) => {
+        const div = $(`#${key}`).parent();
+        value.forEach(error => {
+          div.append(`<div class='text-danger'>${error}</div>`)
+        })
+      })
+    }
+  </script>
+
+@endsection

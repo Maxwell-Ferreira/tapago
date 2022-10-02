@@ -1,34 +1,37 @@
-import { DateTime } from 'luxon';
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm';
-import User from './User';
+import { DateTime } from 'luxon'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import User from './User'
 
 export enum ExpenseType {
   FIXED = 'FIXED',
-  SINGLE = 'SINGLE'
-};
+  SINGLE = 'SINGLE',
+}
 
 export default class Expense extends BaseModel {
   @column({ isPrimary: true })
-  public id: number;
+  public id: number
 
   @column()
-  public userId: number;
+  public userId: number
 
   @belongsTo(() => User)
-  public user: BelongsTo <typeof User>
+  public user: BelongsTo<typeof User>
 
   @column()
-  public amount: number;
+  public description: string
 
   @column()
-  public type: ExpenseType;
+  public amount: number
+
+  @column()
+  public type: ExpenseType
 
   @column.date()
-  public expiresIn?: DateTime;
+  public expiresIn?: DateTime
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime;
+  public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime;
+  public updatedAt: DateTime
 }

@@ -11,7 +11,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/auth/logout', 'UsersController.logout')
 
-  Route.get('/', 'DashboardController.index')
+  Route.get('/', 'DashboardController.index').as('dashboard')
 
   // PEOPLE ROUTES
   Route.resource('people', 'PeopleController')
@@ -19,6 +19,5 @@ Route.group(() => {
   // EXPENSES ROUTES
   Route.get('expenses/fixeds', 'ExpensesController.findAllFixeds')
   Route.get('expenses/single', 'ExpensesController.findAllSingle')
-  Route.get('expenses/header-info', 'ExpensesController.headerInfo')
-  Route.resource('expenses', 'ExpensesController').except(['index'])
+  Route.resource('expenses', 'ExpensesController')
 }).middleware(['auth'])

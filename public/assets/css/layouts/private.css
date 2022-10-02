@@ -21,3 +21,17 @@ main {
   padding: 32px;
   width: 100%;
 }
+
+.tables .nav-link {
+  background-color: rgb(41, 15, 66);
+  color: #fff;
+}
+
+.nav-link.active {
+  background-color: rgb(102, 0, 197)!important;
+}
+
+#form-competence select {
+  border: none!important;
+  outline: none!important;
+}

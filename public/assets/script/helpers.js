@@ -14,3 +14,11 @@ const MONTHS_NAMES = {
 }
 
 const getMonthName = (month) => MONTHS_NAMES[Number(month)]
+
+const $get = (url) =>
+  new Promise((resolve) => {
+    $.get(url, (data) => resolve(data))
+  })
+
+const $currency = (amount) =>
+  Number(amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })

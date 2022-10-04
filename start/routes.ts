@@ -1,4 +1,5 @@
 import Route from '@ioc:Adonis/Core/Route'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 // AUTHENTICATION ROUTES
 Route.group(() => {
@@ -11,7 +12,9 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/auth/logout', 'UsersController.logout')
 
-  Route.get('/', 'DashboardController.index').as('dashboard')
+  Route.get('/', ({ response }: HttpContextContract) => response.redirect('/dashboard'))
+  Route.get('/dashboard', 'DashboardController.index').as('dashboard')
+  Route.get('/dashboard/graphics/expenses', 'DashboardController.expensesGraphic')
 
   // PEOPLE ROUTES
   Route.resource('people', 'PeopleController')

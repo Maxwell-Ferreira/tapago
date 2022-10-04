@@ -8,6 +8,8 @@ export enum ExpenseType {
 }
 
 export default class Expense extends BaseModel {
+  public serializeExtras = true
+
   @column({ isPrimary: true })
   public id: number
 

@@ -20,9 +20,11 @@ main {
 #content {
   padding: 32px;
   width: 100%;
+
+  overflow-y: auto;
 }
 
-.tables .nav-link {
+.tables .nav-link, .charts .nav-link{
   background-color: rgb(41, 15, 66);
   color: #fff;
 }

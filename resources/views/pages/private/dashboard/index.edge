@@ -2,7 +2,112 @@
 @set('title', 'Dashboard')
 
 @section('content')
-  <div id="content">
-    <h1>DASHBOARD</h1>
+  <h1>DASHBOARD</h1>
+  <hr>
+  <div id="expenses-chart" class="charts card bg-dark p-4">
+    <h3 class="card-title mb-3">Despesas Avulsas</h3>
+    <div class="d-flex justify-content-between align-items-center">
+
+      <ul class="range-buttons nav nav-pills" role="tablist">
+        <li class="nav-item me-2" role="presentation">
+          <button value="sevenDays" class="nav-link active text-white p-2" data-bs-toggle="pill">
+            7 dias
+          </button>
+        </li>
+        <li class="nav-item me-2" role="presentation">
+          <button value="thirtyDays" class="nav-link text-white d-block p-2" data-bs-toggle="pill">
+            30 Dias
+          </button>
+        </li>
+        <li class="nav-item me-2" role="presentation">
+          <button value="lastYear" class="nav-link text-white d-block p-2" data-bs-toggle="pill">
+            Último ano
+          </button>
+        </li>
+      </ul>
+
+      <ul class="type-buttons nav nav-pills" role="tablist">
+        <li class="nav-item me-2" role="presentation">
+          <button value="bar" class="nav-link active text-white p-2" data-bs-toggle="pill">
+            Barras
+          </button>
+        </li>
+        <li class="nav-item me-2" role="presentation">
+          <button value="line" class="nav-link text-white d-block p-2" data-bs-toggle="pill">
+            Linha
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div id="chart"></div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
+    window.onload = async () => {
+      let data = await $get('/dashboard/graphics/expenses').catch(() => [])
+      let type = 'bar'
+
+      const currencyFormatter = (val, index) => val ? $currency(val) : 0;
+
+      function drawExpenses() {
+        const seriesData = data.map(item => item.amount);
+        const xaxisData = data.map(item => `${item.day || item.month }/${item.year || item.month}`)
+
+        const options = {
+          chart: {
+            type,
+            foreColor: '#fff',
+            toolbar: { show: false },
+            height: '400px'
+          },
+          markers: {
+              size: 5,
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: currencyFormatter
+          },
+          series: [{ name: 'Total', data: seriesData }],
+          xaxis: {
+            categories: xaxisData
+          },
+          legend: {
+            show: false
+          },
+          yaxis: {
+            labels: {
+              formatter: currencyFormatter
+            }
+          },
+          colors: ['rgb(102, 0, 197)'],
+          tooltip: {
+            enabled: false
+          }
+        }
+
+        const chart = new ApexCharts(document.querySelector('#expenses-chart #chart'), options)
+
+        chart.render()
+
+        return chart
+      }
+
+      let expensesChart = drawExpenses()
+
+      $('#expenses-chart .type-buttons li').click(e => {
+        expensesChart.destroy()
+        type = e.target.value;
+        expensesChart = drawExpenses();
+      });
+
+      $('#expenses-chart .range-buttons li').click(async (e) => {
+        expensesChart.destroy()
+        const mode = e.target.value
+        data = await $get('/dashboard/graphics/expenses?mode=' + mode).catch(() => []);
+        console.log(data);
+        expensesChart = drawExpenses()
+      })
+    }
+  </script>
 @endsection

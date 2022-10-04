@@ -4,7 +4,7 @@
 @section('content')
   <h1>DASHBOARD</h1>
   <hr>
-  <div id="expenses-chart" class="charts card bg-dark p-4">
+  <div id="expenses-chart" class="charts bg-dark rounded p-4 b-2">
     <h3 class="card-title mb-3">Despesas Avulsas</h3>
     <div class="d-flex justify-content-between align-items-center">
 
@@ -39,14 +39,22 @@
         </li>
       </ul>
     </div>
+
+    <div class="loader">
+      <span></span>
+    </div>
     <div id="chart"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
     window.onload = async () => {
+      const loader = $('.loader')
+
       let data = await $get('/dashboard/graphics/expenses').catch(() => [])
       let type = 'bar'
+
+      loader.toggleClass('d-none')
 
       const currencyFormatter = (val, index) => val ? $currency(val) : 0;
 
@@ -102,10 +110,11 @@
       });
 
       $('#expenses-chart .range-buttons li').click(async (e) => {
+        loader.toggleClass('d-none')
         expensesChart.destroy()
         const mode = e.target.value
         data = await $get('/dashboard/graphics/expenses?mode=' + mode).catch(() => []);
-        console.log(data);
+        loader.toggleClass('d-none')
         expensesChart = drawExpenses()
       })
     }

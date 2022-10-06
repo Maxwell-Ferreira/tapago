@@ -17,6 +17,15 @@ main {
   display: flex;
 }
 
+.button-primary {
+  background-color: rgb(41, 15, 66);
+  color: inherit!important;
+}
+
+.button-primary:hover {
+  background-color: rgb(31, 11, 49)!important;
+}
+
 #sidebar {
   height: 100%;
   width: 280px;

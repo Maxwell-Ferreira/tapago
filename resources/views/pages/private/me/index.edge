@@ -1,0 +1,42 @@
+@layout('layouts/private')
+@set('title', 'Meus Dados')
+
+@section('content')
+  <h1>Meus Dados</h1>
+  <hr>
+
+  <form action="/me?_method=PUT" method="POST">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="mb-3">
+          <label class="form-label" for="name">Nome <span class="text-danger">*</span></label></label>
+          <input class="form-control" type="text" id="name" name="name" value="{{auth.user.name}}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="email">Email <span class="text-danger">*</span></label></label>
+          <input class="form-control" type="email" id="email" name="email" value="{{auth.user.email}}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="monthlyLimit">Limite de Gastos desejado (R$) <span class="text-danger">*</span></label></label>
+          <input class="form-control" type="text" id="monthlyLimit" name="monthlyLimit" value="{{auth.user.monthlyLimit}}">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 col-xs-8">
+        <div class="mb-3">
+          <label class="form-label" for="password">Senha</label></label>
+          <input class="form-control" type="password" id="password" name="password">
+        </div>
+      </div>
+      <div class="col-sm-4 col-xs-8">
+        <div class="mb-3">
+          <label class="form-label" for="password_confirmation">Confirmar Senha</label></label>
+          <input class="form-control" type="password" id="password_confirmation" name="password_confirmation">
+        </div>
+      </div>
+    </div>
+    <button class="btn button-primary" type="submit">Salvar</button>
+  </form>
+
+@endsection

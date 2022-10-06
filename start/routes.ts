@@ -23,4 +23,8 @@ Route.group(() => {
   Route.get('expenses/fixeds', 'ExpensesController.findAllFixeds')
   Route.get('expenses/single', 'ExpensesController.findAllSingle')
   Route.resource('expenses', 'ExpensesController')
+
+  // ME ROUTES
+  Route.get('/me', 'UsersController.me')
+  Route.put('/me', 'UsersController.updateMe')
 }).middleware(['auth'])

@@ -20,6 +20,27 @@ main {
 #sidebar {
   height: 100%;
   width: 280px;
+  transition: 400ms;
+  position: relative;
+}
+
+#sidebar.hide {
+  margin-left: -280px;
+}
+
+#sidebar #toggle {
+  cursor: pointer;
+  height: 50px;
+  width: 25px;
+  background-color: inherit;
+  position: absolute;
+  top: calc(50% - 25px);
+  right: -25px;
+  border-top-right-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  display: flex;
+  align-items: center;
 }
 
 #content {

@@ -17,13 +17,17 @@
 <body>
   <main>
     <nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" id="sidebar">
+      <div id="toggle">
+        <small>
+          <strong>
+            <>
+          </strong>
+        </small>
+      </div>
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Ta Pago</span>
       </a>
       <hr>
-      <div>
-        Olá, {{ auth.user.name }}
-      </div>
       <br>
       <ul class="nav nav-pills flex-column mb-auto">
         <li>
@@ -40,9 +44,17 @@
         </li>
       </ul>
       <hr>
-      <div id="logoff">
-        <a href="/auth/logout" class="text-white text-decoration-none">Sair</a>
+      <div id="user">
+        <a href="/me" class="text-white d-flex align-items-center text-decoration-none">
+          <span class="me-2 material-symbols-outlined">person</span>
+          <span>{{ auth.user.name }}</span>
+        </a>
       </div>
+      <hr>
+      <a href="/auth/logout" class="text-white d-flex align-items-center text-decoration-none">
+        <span class="me-2 material-symbols-outlined">logout</span>
+        <span>Sair</span>
+      </a>
       <hr>
       <footer class="text-center">
         <small>Ta Pago <br /> Todos os direitos reservados.</small>
@@ -54,5 +66,12 @@
       </div>
     </div>
   </main>
+
+  <script>
+    $("#toggle").click(() => {
+      const sidebar = $('#sidebar')
+      sidebar.toggleClass('hide')
+    })
+  </script>
 </body>
 </html>

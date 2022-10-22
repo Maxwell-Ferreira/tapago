@@ -2,7 +2,7 @@ import { HttpContext } from '@adonisjs/core/build/standalone'
 import { BaseModel, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 
 export default class QueryFilter {
-  private perPage: number = 10
+  private perPage: number = 20
   private page: number = 1
   private filtersNamespaces: Array<FilterNamespace> = []
   private search?: string = ''

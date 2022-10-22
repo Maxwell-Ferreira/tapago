@@ -1,4 +1,21 @@
-<nav aria-label="Page navigation example">
-  <ul class="pagination bg-dark" id="pagination">
+<nav aria-label="Page navigation example" class="d-flex justify-content-center">
+  <ul class="pagination bg-dark">
+    <li class="page-item">
+      <a class="page-link bg-dark text-white border-secondary" href="#">Página: {{ current_page }}</a>
+    </li>
+    @if(previous_page_url)
+      <li class="page-item">
+        <a class="page-link bg-dark text-white border-secondary" href="expenses{{ previous_page_url }}">
+          <span class="material-symbols-outlined">arrow_back_ios</span>
+        </a>
+      </li>
+    @endif
+    @if(next_page_url)
+      <li class="page-item">
+        <a class="page-link bg-dark text-white border-secondary" href="expenses{{ next_page_url }}">
+          <span class="material-symbols-outlined">arrow_forward_ios</span>
+        </a>
+      </li>
+    @endif
   </ul>
 </nav>

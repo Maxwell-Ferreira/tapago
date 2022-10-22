@@ -127,6 +127,7 @@
             @end
           </tbody>
         </table>
+        @!component('components/pagination', fixeds.meta)
       </div>
       <div class="tab-pane fade" id="pills-single" role="tabpanel" aria-labelledby="pills-single-tab">
         <table id="fixeds" class="table table-dark table-striped">
@@ -149,9 +150,9 @@
             @endeach
           </tbody>
         </table>
+        @!component('components/pagination', single.meta)
       </div>
     </div>
-    @!component('components/pagination')
   </div>
 
   <script>

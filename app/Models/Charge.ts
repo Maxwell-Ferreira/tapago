@@ -1,11 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, computed, HasMany, hasMany, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Person from './Person'
+import Payment from './Payment'
 
-enum Type {
+export enum Type {
   SINGULAR = 'SINGULAR',
-  RECURRENT = 'RECURRENT'
+  RECURRENT = 'RECURRENT',
+}
+
+enum TranslatedTypes {
+  SINGULAR = 'AVULSA',
+  RECURRENT = 'RECORRENTE',
 }
 
 export default class Charge extends BaseModel {
@@ -18,11 +24,22 @@ export default class Charge extends BaseModel {
   @column()
   public type: Type
 
+  @computed()
+  public get typeLabel() {
+    return TranslatedTypes[this.type]
+  }
+
+  @column()
+  public amount: number
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
-  @manyToMany(() => Person)
-  public people: ManyToMany<typeof Person>
+  @belongsTo(() => Person)
+  public people: BelongsTo<typeof Person>
+
+  @hasMany(() => Payment)
+  public payments: HasMany<typeof Payment>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import HttpException from 'App/Exceptions/HttpException'
 import Charge from 'App/Models/Charge'
 import User from 'App/Models/User'
 import QueryFilter from 'App/Utils/QueryFilter'
@@ -15,59 +16,40 @@ export default class ChargesController {
     return new QueryFilter(query, {}).execute(true, true)
   }
 
-  public async create({ view }: HttpContextContract) {
-    return view.render('pages/private/expenses/create')
-  }
-
-  public async store({ auth, request, session, response }: HttpContextContract) {
+  public async store({ auth, request }: HttpContextContract) {
     const validation = await request.validate(CreateChargeValidator)
-    const payload = {
-      ...validation,
-      user_id: auth.user?.id,
-    }
+    const payload = { ...validation, user_id: auth.user?.id }
 
-    return Charge.create(payload).then(() => {
-      session.flash('message', 'Cobrança Cadastrada!')
-      const continueRegistring = request.input('continueRegistring')
-      const next = continueRegistring ? '/charges/create' : '/charges'
-      return response.redirect(next)
-    })
+    return Charge.create(payload)
   }
 
   public async show({ auth, params }: HttpContextContract) {
     return this.getCharge(auth.user, params.id)
   }
 
-  public async edit({ view }: HttpContextContract) {
-    return view.render('pages/private/expenses/form', { formType: 'update' })
-  }
-
-  public async update({ auth, request, session, response, params }: HttpContextContract) {
+  public async update({ auth, request, params }: HttpContextContract) {
     const charge = await this.getCharge(auth.user, params.id)
     const payload = await request.validate(UpdateChargeValidator)
 
     charge?.merge(payload)
     await charge?.save()
 
-    session.flash('message', 'Cobrança atualizada!')
-    return response.redirect('pages/private/expenses')
+    return charge
   }
 
-  public async destroy({ auth, params, session, response }: HttpContextContract) {
+  public async destroy({ auth, params }: HttpContextContract) {
     const charge = await this.getCharge(auth.user, params.id)
 
     const hasDependencies = await charge?.related('payments').query().firstOrFail()
 
-    if (!hasDependencies) {
-      await charge?.delete()
-      session.flash('message', 'Cobrança excluída!')
-    } else {
-      session.flash(
-        'message',
-        'Esta cobrança possui dependencias (pagamentos) e não pode ser deletada.'
-      )
+    if (hasDependencies) {
+      throw new HttpException('Esta cobrança possui registros dependentes e não pode ser apagada.')
     }
 
-    return response.redirect('pages/private/expenses')
+    await charge?.delete()
+
+    return {
+      message: 'Cobrança excluída!',
+    }
   }
 }

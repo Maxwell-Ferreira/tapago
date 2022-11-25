@@ -27,7 +27,7 @@ export default class ExpensesController {
     return this.getExpenses('SINGLE', auth.user)
   }
 
-  private async headerInfo(qs: any, user?: User) {
+  public async statistics(qs: any, user?: User) {
     const competenceValidatinSchema = schema.create({
       competence: schema.date.optional({ format: 'yyyy-MM' }),
     })
@@ -93,31 +93,21 @@ export default class ExpensesController {
     }
   }
 
-  public async index({ view, auth, request }: HttpContextContract) {
-    const fixeds = await this.getExpenses('FIXED', auth.user)
-    const single = await this.getExpenses('SINGLE', auth.user)
-
-    const header = await this.headerInfo(request.qs(), auth.user)
-
-    return view.render('pages/private/expenses/index', { fixeds, single, header })
+  public async listSingle({ auth }) {
+    return this.getExpenses('SINGLE', auth.user)
   }
 
-  public async create({ view }: HttpContextContract) {
-    return view.render('pages/private/expenses/create')
+  public async listFixeds({ auth }: HttpContextContract) {
+    return this.getExpenses('FIXED', auth.user)
   }
 
-  public async store({ request, auth, response, session }: HttpContextContract) {
+  public async store({ request, auth }: HttpContextContract) {
     const validation = await request.validate(CreateExpenseValidator)
     const type = ExpenseType[validation.type as ExpenseType]
 
     const payload = { ...validation, type, userId: auth.user?.id }
 
-    return Expense.create(payload).then(() => {
-      session.flash('message', 'Despesa Cadastrada!')
-      const continueRegistring = request.input('continueRegistring')
-      const next = continueRegistring ? '/expenses/create' : '/expenses'
-      return response.redirect(next)
-    })
+    return Expense.create(payload)
   }
 
   public async show({ auth, params }: HttpContextContract) {

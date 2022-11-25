@@ -5,43 +5,31 @@ import LoginUserValidator from 'App/Validators/LoginUserValidator'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UsersController {
-  public async registerForm({ view }: HttpContextContract) {
-    return view.render('pages/public/register')
-  }
-
-  public async register({ request, response, session }: HttpContextContract) {
+  public async register({ request }: HttpContextContract) {
     const payload = await request.validate(CreateUserValidator)
-    await User.create(payload).then(() => {
-      session.flash('message', 'Cadastro realizado! Faça seu login para acessar o dashboard.')
-      response.redirect('/auth/login')
-    })
+    return User.create(payload)
   }
 
-  public async loginForm({ view }: HttpContextContract) {
-    return view.render('pages/public/login')
-  }
-
-  public async login({ auth, request, response }: HttpContextContract) {
+  public async login({ auth, request }: HttpContextContract) {
     const paylaod = await request.validate(LoginUserValidator)
 
-    await auth.attempt(paylaod.email, paylaod.password).then(() => response.redirect('/'))
+    return auth.attempt(paylaod.email, paylaod.password)
   }
 
-  public async logout({ auth, response }: HttpContextContract) {
-    await auth.logout()
-    response.redirect('/auth/login')
+  public async logout({ auth }: HttpContextContract) {
+    return auth.logout()
   }
 
-  public async me({ view }: HttpContextContract) {
-    return view.render('pages/private/me/index')
+  public async me({ auth }: HttpContextContract) {
+    return auth.user
   }
 
-  public async updateMe({ auth, response, request }: HttpContextContract) {
+  public async updateMe({ auth, request }: HttpContextContract) {
     const payload = await request.validate(UpdateUserValidator)
 
     auth.user?.merge(payload)
     await auth.user?.save()
 
-    return response.redirect('/me')
+    return auth.user
   }
 }

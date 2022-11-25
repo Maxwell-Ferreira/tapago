@@ -4,10 +4,6 @@ import ExpensesReports from 'App/Reports/ExpensesReports'
 export default class DashboardController {
   private ALLOWED_MODES = ['sevenDays', 'thirtyDays', 'lastYear']
 
-  public async index({ view }: HttpContextContract) {
-    return view.render('pages/private/dashboard/index')
-  }
-
   public async expensesGraphic({ request, auth }: HttpContextContract) {
     let mode = request.qs().mode as string
     if (!this.ALLOWED_MODES.includes(mode)) mode = 'sevenDays'

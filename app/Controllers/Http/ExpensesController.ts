@@ -93,14 +93,6 @@ export default class ExpensesController {
     }
   }
 
-  public async listSingle({ auth }) {
-    return this.getExpenses('SINGLE', auth.user)
-  }
-
-  public async listFixeds({ auth }: HttpContextContract) {
-    return this.getExpenses('FIXED', auth.user)
-  }
-
   public async store({ request, auth }: HttpContextContract) {
     const validation = await request.validate(CreateExpenseValidator)
     const type = ExpenseType[validation.type as ExpenseType]

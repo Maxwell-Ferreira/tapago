@@ -11,7 +11,7 @@ Route.group(() => {
 }).prefix('api/auth/')
 
 Route.group(() => {
-  Route.get('/auth/logout', 'UsersController.logout')
+  Route.post('/auth/logout', 'UsersController.logout')
 
   Route.get('dashboard', 'DashboardController.index').as('dashboard')
   Route.get('dashboard/graphics/expenses', 'DashboardController.expensesGraphic')

@@ -15,6 +15,6 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 */
 export default class HttpException extends Exception {
   public async handle(error: this, ctx: HttpContextContract) {
-    ctx.response.status(error.status).send(error.message)
+    return ctx.response.status(error.status).json(error.message)
   }
 }

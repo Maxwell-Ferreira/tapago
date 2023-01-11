@@ -15,19 +15,12 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel",
-    {
-      "file": "./start/view",
-      "environment": [
-        "web"
-      ]
-    }
+    "./start/kernel"
   ],
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/session",
-    "@adonisjs/view",
     "@adonisjs/shield",
     "@adonisjs/lucid",
     "@adonisjs/auth"
